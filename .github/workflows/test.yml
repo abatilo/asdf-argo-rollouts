@@ -1,0 +1,22 @@
+name: build
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 5"
+
+jobs:
+  plugin_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        ver: [1.11.3]
+    steps:
+      - name: asdf_plugin_test
+        uses: asdf-vm/actions/plugin-test@v1
+        with:
+          version: ${{ matrix.ver }}
+          command: kubectl-argo-rollouts version
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
