@@ -25,7 +25,7 @@ install() {
 get_download_url() {
   local version="$1"
   local platform="$2"
-  local filename="${binary_name}${platform}"
+  local filename="${binary_name}-${platform}"
   echo "https://github.com/argoproj/argo-rollouts/releases/download/v${version}/${filename}"
 }
 
