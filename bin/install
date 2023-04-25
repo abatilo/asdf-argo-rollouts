@@ -5,10 +5,26 @@ set -o pipefail
 
 binary_name="kubectl-argo-rollouts"
 
+get_arch () {
+    local arch=""
+
+    case "$(uname -m)" in
+        x86_64|amd64) arch="amd64"; ;;
+        arm64|aarch64) arch="arm64"; ;;
+        *)
+            echo "Arch '$(uname -m)' not supported!" >&2
+            exit 1
+            ;;
+    esac
+
+    echo -n "$arch"
+}
+
 install() {
   local version=$2
   local install_path=$3
-  local platform="$(uname | tr '[:upper:]' '[:lower:]')-amd64"
+  local arch=$(get_arch)
+  local platform="$(uname | tr '[:upper:]' '[:lower:]')-${arch}"
 
   local bin_install_path="$install_path/bin"
   local binary_path="$bin_install_path/${binary_name}"
